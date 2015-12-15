@@ -1,0 +1,39 @@
+rules:
+  indent:
+    - 1
+    - 4
+  quotes:
+    - 1
+    - single
+  linebreak-style:
+    - 2
+    - unix
+  semi:
+    - 2
+    - always
+  strict: 2
+  no-unreachable: 2
+  no-trailing-spaces: 1
+  no-irregular-whitespace: 1
+  no-underscore-dangle: 1
+  comma-spacing: 1
+  no-extra-semi: 1
+  no-console: 0
+  no-alert: 0
+  no-extend-native: 1
+  no-eq-null: 0
+  valid-typeof: 1
+env:
+  es6: true
+  browser: true
+extends: 'eslint:recommended'
+ecmaFeatures:
+  jsx: true
+  defaultParams: true
+  destructuring: true
+  objectLiteralShorthandMethods: true
+  objectLiteralShorthandProperties: true
+  modules: true
+  experimentalObjectRestSpread: true
+plugins:
+  - react

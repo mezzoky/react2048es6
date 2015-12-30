@@ -20,7 +20,7 @@ function range(num) {
 }
 
 class Tile {
-    constructor(value=0, row=-1, col=-1) {
+    constructor(value = 0, row = -1, col = -1) {
         this.id = Tile.id++;
 
         this.value = value;
@@ -83,8 +83,8 @@ class Board {
     }
     addRandomTile() {
         let emptyCellsForRandomize = [];
-        this.cells.forEach((row, x)=>{
-            row.forEach((cell, y)=>{
+        this.cells.forEach((row, x) => {
+            row.forEach((cell, y) => {
                 if (!cell.value) {
                     emptyCellsForRandomize.push({x: x, y: y});
                 }
@@ -95,19 +95,23 @@ class Board {
         let newValue = Math.random() < Board.fourProbability ? 4 : 2;
         this.cells[cell.x][cell.y] = this.addTile(newValue);
     }
+    merge(cell1, cell2) {
+        let tempTargetCell = cell1;
+        cell1 = this.addTile(cell1.value);
+        tempTargetCell.mergedInto = cell1;
+        let nextCell = cell2;
+        nextCell.mergedInto = cell1;
+        cell1.value += nextCell.value;
+        return cell1;
+    }
     moveLeft() {
         let hasChanged = false;
         for (let x in range(Board.size)) {
-            let thisRow = this.cells[x].filter((cell)=>cell.value);
+            let thisRow = this.cells[x].filter((cell) => cell.value);
             for (let y in range(Board.size)) {
                 let targetCell = thisRow.length ? thisRow.shift() : this.addTile();
                 if (thisRow.length && thisRow[0].value === targetCell.value) {
-                    let tempTargetCell = targetCell;
-                    targetCell = this.addTile(targetCell.value);
-                    tempTargetCell.mergedInto = targetCell;
-                    let nextCell = thisRow.shift();
-                    nextCell.mergedInto = targetCell;
-                    targetCell.value += nextCell.value;
+                    targetCell = this.merge(targetCell, thisRow.shift());
                 }
                 hasChanged |= (this.cells[x][y].value !== targetCell.value);
                 this.cells[x][y] = targetCell;
@@ -117,8 +121,10 @@ class Board {
         return hasChanged;
     }
     updatePositions() {
-        this.cells.forEach((row, x)=>{
-            row.forEach((cell, y)=>{cell.moveTo(x, y);});
+        this.cells.forEach((row, x) => {
+            row.forEach((cell, y) => {
+                cell.moveTo(x, y);
+            });
         });
     }
     move(direction) {
@@ -138,9 +144,11 @@ class Board {
         return this;
     }
     clearOldTiles() {
-        this.tiles = this.tiles.filter(tile=>tile.markForDeletion===false);
+        this.tiles = this.tiles.filter(tile => tile.markForDeletion === false);
         /* those stay at outside and not found in this.cells will be removed next time */
-        this.tiles.forEach(tile=>{tile.markForDeletion=true;});
+        this.tiles.forEach(tile => {
+            tile.markForDeletion = true;
+        });
     }
     hasWon() {}
     hasLost() {}

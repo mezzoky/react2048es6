@@ -30,23 +30,23 @@ gulp.task('wjs', function() {
         })
         .bundle()
         .pipe(source('bundle.js'))
-        .pipe(buffer())
-        .pipe(uglify({
-            mangle: true,
-            compress: {
-                sequences: true,
-                dead_code: true,
-                conditionals: true,
-                booleans: true,
-                unused: true,
-                if_return: true,
-                join_vars: true,
-                drop_console: true
-            },
-            outSourceMap: true,
-            basePath: 'dist',
-            sourceRoot: '/'
-        }))
+        // .pipe(buffer())
+        // .pipe(uglify({
+        //     mangle: true,
+        //     compress: {
+        //         sequences: true,
+        //         dead_code: true,
+        //         conditionals: true,
+        //         booleans: true,
+        //         unused: true,
+        //         if_return: true,
+        //         join_vars: true,
+        //         drop_console: true
+        //     },
+        //     outSourceMap: true,
+        //     basePath: 'dist',
+        //     sourceRoot: '/'
+        // }))
         .pipe(gulp.dest(dist));
         console.log('Finished in ', (Date.now() - startTime) + 'ms');
     }
